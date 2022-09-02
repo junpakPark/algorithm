@@ -8,4 +8,4 @@ for _ in range(n):
   for i in range(student):
     if array[i] > avg:
       count += 1
-  print(format(count/len(array)*100, '.3f')+"%")
+  print(format(count/student*100, '.3f')+"%")
