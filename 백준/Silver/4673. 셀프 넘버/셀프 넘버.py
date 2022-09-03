@@ -1,12 +1,12 @@
-numbers = list(range(1,10001))
-remove = []
+numbers = set(range(1,10001))
+remove = set()
 
 for number in numbers:
   for n in str(number):
     number += int(n)
   if number <= 10000:
-    remove.append(number)
+    remove.add(number)
 
-result = [i for i in numbers if i not in remove]
+result = sorted(numbers - remove)
 for i in result:
   print(i)
