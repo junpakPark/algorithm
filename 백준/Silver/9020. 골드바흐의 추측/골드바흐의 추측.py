@@ -1,3 +1,6 @@
+import sys
+input=sys.stdin.readline
+
 a = 10000
 b = int(a ** 0.5)
 c = [False,False] + [True]*(a-1)
