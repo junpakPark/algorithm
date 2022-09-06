@@ -7,15 +7,15 @@ for i in range(2, b + 1):
     for j in range(2*i, a + 1, i):
         c[j] = False
       
-primes=[i for i in range(2, a+1) if c[i] == True]
-
 T = int(input())
 
 for _ in range(T):
   n = int(input())
-  array = []
-  for k in primes:
-    if n - k in primes:
-      if 2 * k <= n :
-        array.append((k ,n-k))
-  print(*array[-1])
+  x = n // 2
+  y = n // 2
+  while 1:
+    if c[x] and c[y]:
+      print(x, y)
+      break
+    x-=1
+    y+=1
