@@ -1,3 +1,6 @@
+import sys
+input=sys.stdin.readline
+
 array = []
 
 for _ in range(int(input())):
