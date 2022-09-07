@@ -1,8 +1,6 @@
-n = int(input())
-
 array = []
 
-for _ in range(n):
+for _ in range(int(input())):
   array.append(int(input()))
 
 array.sort()
