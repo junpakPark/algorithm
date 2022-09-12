@@ -1,3 +1,6 @@
+import sys
+input = sys.stdin.readline
+
 n = int(input())
 arr =[]
 
@@ -8,4 +11,4 @@ result = list(set(arr))
 result.sort()
 result.sort(key = len)
 
-print(*result, sep='\n')
+print(*result, sep='')
