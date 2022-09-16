@@ -9,8 +9,8 @@ arr2 = list(map(int, input().split()))
 
 intersection = set(arr1) & set(arr2)
 
-for i in range(m):
-  if arr2[i] in intersection:
+for i in arr2:
+  if i in intersection:
     print(1, end=' ')
   else :
     print(0, end=' ')
