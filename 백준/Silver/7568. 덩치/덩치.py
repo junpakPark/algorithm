@@ -1,13 +1,13 @@
-import sys
-input = sys.stdin.readline
+N= int(input())
 
-arr =[]
-for _ in range(int(input())):
-  arr.append(tuple(map(int, input().split())))
+S = [list(map(int, input().split())) for i in range(N)]
 
-for i in range(len(arr)):
-  count = 1
-  for j in range(len(arr)):
-    if arr[i][0] < arr[j][0] and arr[i][1] < arr[j][1]:
-      count +=1
-  print(count, end=' ')
+for x1, y1 in S:
+    result = 1
+    for x2, y2 in S:
+        if x1 < x2 and y1 < y2:
+            result += 1
+
+
+    print(result, end =' ')
+    
