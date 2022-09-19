@@ -15,7 +15,6 @@ for _ in range(int(input())):
   elif command[0] == 'P' :
     s.append(command[1])
 
-s2.reverse()
+s += s2[::-1]
 
-
-print(*(s+s2), sep='')
+print(*s, sep='')
