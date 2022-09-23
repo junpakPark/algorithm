@@ -23,7 +23,6 @@ for i in range(n - 8 + 1):
                 W += 1
               elif arr[a][b] != 'W':
                 B += 1
-      answer.append(W)
-      answer.append(B)
+      answer.append(min(W, B))
 
 print(min(answer))
