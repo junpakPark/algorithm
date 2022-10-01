@@ -1,6 +1,4 @@
 import sys
-from collections import deque
-
 input = sys.stdin.readline
 
 n = int(input())
@@ -21,4 +19,4 @@ def dfs(v):
       dfs(next_com)
 
 dfs(1)
-print(sum(visited) - 1)
+print(visited.count(1)-1)
