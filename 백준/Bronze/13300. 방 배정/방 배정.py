@@ -1,34 +1,20 @@
 import sys
-from collections import Counter
 input = sys.stdin.readline
 
 n, k = map(int, input().split())
+student = [[0] * 7 for _ in range(2)]
 
-male = []
-female = []
 
 for _ in range(n):
   s, y = map(int, input().split())
-  if s == 0 :
-    female.append(y)
-  else:
-    male.append(y)
-
-male_dict = Counter(male)
-female_dict = Counter(female)
+  student[s][y] += 1
 
 room = 0
 
-for i in male_dict.keys():
-  if male_dict[i] % k == 0:
-    room += male_dict[i] // k
-  else:
-    room += male_dict[i] // k + 1
-    
-for i in female_dict.keys():
-  if female_dict[i] % k == 0:
-    room += female_dict[i] // k
-  else:
-    room += female_dict[i] // k + 1
+for i in range(2):    
+  for j in range(1, 7):
+    room += student[i][j] // k
+    if student[i][j] % k != 0:
+      room += 1
 
 print(room)
