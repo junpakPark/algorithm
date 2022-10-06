@@ -1,21 +1,11 @@
 import sys
-from collections import deque
-
 input = sys.stdin.readline
 
 n = int(input())
 arr = list(map(int, input().split()))
-front = []
-back = []
+ans = []
 
 for i in range(n):
-  if arr[i] == 0:
-    front.append(i+1)
-  else:
-    for j in range(arr[i]):
-      back.append(front.pop())
-    front.append(i+1)
-    front += back[::-1]
-    back = []
+  ans.insert(i - arr[i], i+1)
 
-print(*front)
+print(*ans)
