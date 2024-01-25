@@ -12,11 +12,12 @@ class Solution {
         for (String str : strs) {
             char[] chars = str.toCharArray();
             Arrays.sort(chars);
-            String key = new String(chars);
+            String key = String.valueOf(chars);
 
-            List<String> value = results.getOrDefault(key, new ArrayList<>());
-            value.add(str);
-            results.put(key, value);
+            if (!results.containsKey(key)) {
+                results.put(key, new ArrayList<>());
+            }
+            results.get(key).add(str);
         }
 
         return new ArrayList<>(results.values());
