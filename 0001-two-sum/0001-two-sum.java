@@ -7,16 +7,15 @@ public class Solution {
         Map<Integer, Integer> numbers = new HashMap<>();
 
         for (int i = 0; i < nums.length; i++) {
+            int key = target - nums[i];
+
+            if (numbers.containsKey(key)) {
+                return new int[]{numbers.get(key), i};
+            }
+
             numbers.put(nums[i], i);
         }
 
-        for (int i = 0; i < nums.length - 1; i++) {
-            int key = target - nums[i];
-
-            if (numbers.containsKey(key) && i != numbers.get(key)) {
-                return new int[]{i, numbers.get(key)};
-            }
-        }
         return null;
     }
 }
