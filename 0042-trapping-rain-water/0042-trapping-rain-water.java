@@ -1,25 +1,27 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 class Solution {
     public int trap(int[] height) {
-        int start = 0;
-        int end = height.length - 1;
-
+        Deque<Integer> stack = new ArrayDeque<>();
         int volume = 0;
-        int startMax = height[start];
-        int endMax = height[end];
 
-        while (start < end) {
-            startMax = Math.max(height[start], startMax);
-            endMax = Math.max(height[end], endMax);
+        for (int i = 0; i < height.length; i++) {
 
-            if (startMax <= endMax) {
-                volume += startMax - height[start];
-                start++;
-                continue;
+            while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+                Integer top = stack.pop();
+
+                if (stack.isEmpty()) {
+                    break;
+                }
+                int distance = i - stack.peek() - 1;
+                int waters = Math.min(height[i], height[stack.peek()]) - height[top];
+
+                volume += distance * waters;
             }
-            volume += endMax - height[end];
-            end--;
+            
+            stack.push(i);
         }
-
         return volume;
     }
 }
