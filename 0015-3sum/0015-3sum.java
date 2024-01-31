@@ -7,6 +7,7 @@ class Solution {
         Arrays.sort(nums);
 
         List<List<Integer>> results = new ArrayList<>();
+        int start, end, sum;
 
         for (int i = 0; i < nums.length - 2; i++) {
 
@@ -14,11 +15,11 @@ class Solution {
                 continue;
             }
 
-            int start = i + 1;
-            int end = nums.length - 1;
+            start = i + 1;
+            end = nums.length - 1;
 
             while (start < end) {
-                int sum = nums[i] + nums[start] + nums[end];
+                sum = nums[i] + nums[start] + nums[end];
 
                 if (sum == 0) {
                     results.add(Arrays.asList(nums[i], nums[start], nums[end]));
@@ -47,3 +48,4 @@ class Solution {
     }
 
 }
+
