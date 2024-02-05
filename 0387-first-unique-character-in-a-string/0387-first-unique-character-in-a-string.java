@@ -1,32 +1,15 @@
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 class Solution {
     public int firstUniqChar(String s) {
+        int[] chars = new int[26];
 
-        Map<Character, Integer> asd = new HashMap<>();
-
-        int length = s.length();
-
-        for (int i = 0; i < length; i++) {
-            char character = s.charAt(i);
-
-            if (!asd.containsKey(character)) {
-                asd.put(character, i);
-                continue;
+        for (char c : s.toCharArray()) {
+            chars[c - 'a']++;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            if (chars[s.charAt(i) - 'a'] == 1) {
+                return i;
             }
-            asd.replace(character, -1);
         }
-        Set<Integer> sad = new HashSet<>(asd.values());
-        sad.remove(-1);
-
-        if (sad.isEmpty()) {
-            return -1;
-        }
-
-        return Collections.min(sad);
+        return -1;
     }
 }
