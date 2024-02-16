@@ -1,24 +1,24 @@
 class Solution {
     public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        if(arr == null || arr.length == 0 || k > arr.length ) {
+            return 0;
+        }
+        
         HashMap<Integer, Integer> frequencyMap = new HashMap<>();
+        
         for (int num : arr) {
             frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
         }
         
-        PriorityQueue<Integer> heap = new PriorityQueue<>((n1, n2) -> frequencyMap.get(n1) - frequencyMap.get(n2));
-        heap.addAll(frequencyMap.keySet());
+        PriorityQueue<Integer> heap = new PriorityQueue<>(frequencyMap.values());
         
-        while (k > 0 && !heap.isEmpty()) {
-            int current = heap.poll(); 
-            int freq = frequencyMap.get(current);
-            if (k - freq < 0) {
-                break;
-            }
-            k -= freq;
-            frequencyMap.remove(current);
-            
+        while (k > 0) {
+            k -= heap.poll();            
         }
         
-        return frequencyMap.size();
+        if(k < 0) {
+            return heap.size() + 1;
+        }
+        return heap.size();
     }
 }
