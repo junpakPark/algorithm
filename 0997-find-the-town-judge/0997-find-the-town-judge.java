@@ -5,8 +5,10 @@ class Solution {
         for (int[] relation : trust) {
             int a = relation[0];
             int b = relation[1];
-            trustScores[a]--;
-            trustScores[b]++;
+            trustScores[a] = -1;
+            if (trustScores[b] != -1) {
+                trustScores[b]++;
+            }
         }
 
         for (int i = 1; i <= n; i++) {
