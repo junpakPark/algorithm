@@ -1,8 +1,6 @@
-
 class Solution {
 
-    private final List<String> result = new ArrayList<>();
-    private final Map<Character, List<Character>> dic = Map.of(
+    private static final Map<Character, List<Character>> DIC = Map.of(
             '0', Collections.emptyList(),
             '1', Collections.emptyList(),
             '2', List.of('a', 'b', 'c'),
@@ -15,12 +13,14 @@ class Solution {
             '9', List.of('w', 'x', 'y', 'z')
     );
 
+    private final List<String> result = new ArrayList<>();
+
     public List<String> letterCombinations(String digits) {
         if (digits.isEmpty()) {
             return result;
         }
         dfs(digits, 0, new StringBuilder());
-        
+
         return result;
     }
 
@@ -34,7 +34,7 @@ class Solution {
             return;
         }
 
-        for (final Character c : dic.get(digits.charAt(index))) {
+        for (final Character c : DIC.get(digits.charAt(index))) {
             path.append(c);
             dfs(digits, index + 1, path);
             path.deleteCharAt(path.length() - 1);
