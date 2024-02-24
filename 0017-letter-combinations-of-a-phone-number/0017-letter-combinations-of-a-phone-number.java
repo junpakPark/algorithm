@@ -2,7 +2,7 @@ class Solution {
 
     private final List<String> result = new ArrayList<>();
     private final Map<Character, List<Character>> dic = new HashMap<>();
-    
+
     public List<String> letterCombinations(String digits) {
         if (digits.isEmpty()) {
             return result;
@@ -34,7 +34,9 @@ class Solution {
         }
 
         for (final Character c : dic.get(digits.charAt(index))) {
-            dfs(digits, index + 1, new StringBuilder(path).append(c));
+            path.append(c);
+            dfs(digits, index + 1, path);
+            path.deleteCharAt(path.length() - 1);
         }
     }
 }
