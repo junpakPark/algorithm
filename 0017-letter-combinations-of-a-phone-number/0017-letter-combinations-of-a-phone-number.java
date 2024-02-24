@@ -1,25 +1,26 @@
+
 class Solution {
 
     private final List<String> result = new ArrayList<>();
-    private final Map<Character, List<Character>> dic = new HashMap<>();
+    private final Map<Character, List<Character>> dic = Map.of(
+            '0', Collections.emptyList(),
+            '1', Collections.emptyList(),
+            '2', List.of('a', 'b', 'c'),
+            '3', List.of('d', 'e', 'f'),
+            '4', List.of('g', 'h', 'i'),
+            '5', List.of('j', 'k', 'l'),
+            '6', List.of('m', 'n', 'o'),
+            '7', List.of('p', 'q', 'r', 's'),
+            '8', List.of('t', 'u', 'v'),
+            '9', List.of('w', 'x', 'y', 'z')
+    );
 
     public List<String> letterCombinations(String digits) {
         if (digits.isEmpty()) {
             return result;
         }
-
-        dic.put('0', Collections.emptyList());
-        dic.put('1', Collections.emptyList());
-        dic.put('2', List.of('a', 'b', 'c'));
-        dic.put('3', List.of('d', 'e', 'f'));
-        dic.put('4', List.of('g', 'h', 'i'));
-        dic.put('5', List.of('j', 'k', 'l'));
-        dic.put('6', List.of('m', 'n', 'o'));
-        dic.put('7', List.of('p', 'q', 'r', 's'));
-        dic.put('8', List.of('t', 'u', 'v'));
-        dic.put('9', List.of('w', 'x', 'y', 'z'));
-
         dfs(digits, 0, new StringBuilder());
+        
         return result;
     }
 
@@ -40,3 +41,4 @@ class Solution {
         }
     }
 }
+
