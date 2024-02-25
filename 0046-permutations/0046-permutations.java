@@ -2,7 +2,7 @@ class Solution {
 
     private final List<List<Integer>> results = new ArrayList<>();
     private int[] elements;
-    boolean[] used;
+    private boolean[] used;
 
     public List<List<Integer>> permute(int[] nums) {
         if (nums == null || nums.length == 0) {
