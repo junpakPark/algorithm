@@ -1,35 +1,36 @@
-
 class Solution {
 
     private final List<List<Integer>> results = new ArrayList<>();
     private int[] elements;
+    boolean[] used;
 
     public List<List<Integer>> permute(int[] nums) {
         if (nums == null || nums.length == 0) {
             return results;
         }
         elements = nums;
+        used = new boolean[nums.length];
 
-        dfs(new ArrayList<>(), new HashSet<>());
+        backtracking(new ArrayList<>());
 
         return results;
     }
 
-    private void dfs(List<Integer> curr, Set<Integer> seen) {
-        if (curr.size() == elements.length) {
-            results.add(new ArrayList<>(curr));
+    private void backtracking(List<Integer> previous) {
+        if (previous.size() == elements.length) {
+            results.add(new ArrayList<>(previous));
             return;
         }
-
-        for (final int element : elements) {
-            if (seen.contains(element)) {
+        
+        for (int i = 0; i < elements.length; i++) {
+            if (used[i]) {
                 continue;
             }
-            curr.add(element);
-            seen.add(element);
-            dfs(curr, seen);
-            curr.remove(curr.size() - 1);
-            seen.remove(element);
+            used[i] = true;
+            previous.add(elements[i]);
+            backtracking(previous);
+            previous.remove(previous.size() - 1);
+            used[i] = false;
         }
     }
 }
