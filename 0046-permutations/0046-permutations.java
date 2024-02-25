@@ -1,28 +1,35 @@
+
 class Solution {
 
     private final List<List<Integer>> results = new ArrayList<>();
-    
-    public List<List<Integer>> permute(int[] nums) {
-        List<Integer> elements = Arrays.stream(nums).boxed().collect(Collectors.toList());
+    private int[] elements;
 
-        dfs(new ArrayList<>(), elements);
+    public List<List<Integer>> permute(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return results;
+        }
+        elements = nums;
+
+        dfs(new ArrayList<>(), new HashSet<>());
 
         return results;
     }
 
-    private void dfs(List<Integer> prevElements, List<Integer> elements) {
-        if (elements.isEmpty()) {
-            results.add(new ArrayList<>(prevElements));
+    private void dfs(List<Integer> curr, Set<Integer> seen) {
+        if (curr.size() == elements.length) {
+            results.add(new ArrayList<>(curr));
+            return;
         }
 
-        for (final Integer element : elements) {
-            List<Integer> nextElements = new ArrayList<>(elements);
-            nextElements.remove(element);
-
-            prevElements.add(element);
-
-            dfs(prevElements, nextElements);
-            prevElements.remove(element);
+        for (final int element : elements) {
+            if (seen.contains(element)) {
+                continue;
+            }
+            curr.add(element);
+            seen.add(element);
+            dfs(curr, seen);
+            curr.remove(curr.size() - 1);
+            seen.remove(element);
         }
     }
 }
