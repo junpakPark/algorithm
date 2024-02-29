@@ -9,8 +9,7 @@ class Solution {
                     .add(ticket[1]);
         }
 
-        String[] answer = {};
-        List<String> results = new LinkedList<>();
+        Deque<String> results = new ArrayDeque<>();
         Deque<String> seen = new ArrayDeque<>();
 
         seen.push("ICN");
@@ -19,10 +18,9 @@ class Solution {
             while (routes.containsKey(seen.getFirst()) && !routes.get(seen.getFirst()).isEmpty()) {
                 seen.push(routes.get(seen.getFirst()).poll());
             }
-            results.add(0, seen.pop());
+            results.addFirst(seen.pop());
         }
 
-        return results.toArray(answer);
+        return results.toArray(new String[0]);
     }
-
 }
