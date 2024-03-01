@@ -1,16 +1,16 @@
 class Solution {
 
-    private int[][] graph;
+    private boolean[][] graph;
     private boolean[] visited;
     private boolean[] onStack;
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        graph = new int[numCourses][numCourses];
+        graph = new boolean[numCourses][numCourses];
         visited = new boolean[numCourses];
         onStack = new boolean[numCourses];
 
         for (final int[] prerequisite : prerequisites) {
-            graph[prerequisite[0]][prerequisite[1]] = 1;
+            graph[prerequisite[0]][prerequisite[1]] = true;
         }
 
         for (int i = 0; i < numCourses; i++) {
@@ -21,19 +21,23 @@ class Solution {
         return true;
     }
 
-    private boolean hasCycle(final int i) {
-        visited[i] = true;
-        onStack[i] = true;
+    private boolean hasCycle(final int course) {
+        if (onStack[course]) {
+            return true;
+        }
+        if (visited[course]) {
+            return false;
+        }
 
-        for (int j = 0; j < graph[i].length; j++) {
+        visited[course] = true;
+        onStack[course] = true;
 
-            if (graph[i][j] == 1) {
-                if ((!visited[j] && hasCycle(j)) || onStack[j]) {
-                    return true;
-                }
+        for (int i = 0; i < graph[course].length; i++) {
+            if (graph[course][i] && hasCycle(i)) {
+                return true;
             }
         }
-        onStack[i] = false;
+        onStack[course] = false;
         return false;
     }
 }
