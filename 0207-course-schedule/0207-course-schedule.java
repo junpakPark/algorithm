@@ -1,43 +1,48 @@
 class Solution {
-
-    private boolean[][] graph;
-    private boolean[] visited;
-    private boolean[] onStack;
-
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        graph = new boolean[numCourses][numCourses];
-        visited = new boolean[numCourses];
-        onStack = new boolean[numCourses];
-
-        for (final int[] prerequisite : prerequisites) {
-            graph[prerequisite[0]][prerequisite[1]] = true;
+        Map<Integer, List<Integer>> finishToTakeMap = new HashMap<>();
+        for (int[] pre : prerequisites) {
+            finishToTakeMap.computeIfAbsent(pre[0], K -> new ArrayList<>())
+                    .add(pre[1]);
         }
 
-        for (int i = 0; i < numCourses; i++) {
-            if (!visited[i] && hasCycle(i)) {
+        List<Integer> takes = new ArrayList<>();
+        List<Integer> visited = new ArrayList<>();
+
+        for (Integer finish : finishToTakeMap.keySet()) {
+            if (hasCycle(finishToTakeMap, finish, takes, visited)) {
                 return false;
             }
         }
+
         return true;
     }
 
-    private boolean hasCycle(final int course) {
-        if (onStack[course]) {
+    public boolean hasCycle(
+            Map<Integer, List<Integer>> finishToTakeMap,
+            Integer finish,
+            List<Integer> takes,
+            List<Integer> visited
+    ) {
+        if (takes.contains(finish)) {
             return true;
         }
-        if (visited[course]) {
+        if (visited.contains(finish)) {
             return false;
         }
 
-        visited[course] = true;
-        onStack[course] = true;
-
-        for (int i = 0; i < graph[course].length; i++) {
-            if (graph[course][i] && hasCycle(i)) {
-                return true;
+        if (finishToTakeMap.containsKey(finish)) {
+            takes.add(finish);
+            for (Integer take : finishToTakeMap.get(finish)) {
+                if (hasCycle(finishToTakeMap, take, takes, visited)) {
+                    return true;
+                }
             }
+            takes.remove(finish);
+            visited.add(finish);
         }
-        onStack[course] = false;
+
         return false;
     }
 }
+
