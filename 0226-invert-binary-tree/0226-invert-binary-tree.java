@@ -4,24 +4,24 @@ class Solution {
             return null;
         }
 
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        stack.push(root);
+        Queue<TreeNode> stack = new ArrayDeque<>();
+        stack.offer(root);
 
         while (!stack.isEmpty()) {
-            TreeNode node = stack.pop();
+            TreeNode node = stack.poll();
 
             TreeNode temp = node.left;
             node.left = node.right;
             node.right = temp;
 
             if (node.left != null) {
-                stack.push(node.left);
+                stack.offer(node.left);
             }
             if (node.right != null) {
-                stack.push(node.right);
+                stack.offer(node.right);
             }
         }
-        
+
         return root;
     }
 }
