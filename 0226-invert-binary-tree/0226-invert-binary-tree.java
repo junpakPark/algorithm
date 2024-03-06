@@ -1,19 +1,27 @@
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-        dfs(root);
-
-        return root;
-    }
-
-    private void dfs(final TreeNode root) {
         if (root == null) {
-            return;
+            return null;
         }
-        TreeNode temp = root.left;
-        root.left = root.right;
-        root.right = temp;
 
-        dfs(root.left);
-        dfs(root.right);
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.push(root);
+
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+
+            TreeNode temp = node.left;
+            node.left = node.right;
+            node.right = temp;
+
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+        }
+        
+        return root;
     }
 }
