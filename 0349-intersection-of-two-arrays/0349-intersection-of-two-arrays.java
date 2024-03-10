@@ -7,13 +7,14 @@ class Solution {
         
         Set<Integer> set2 = new HashSet<>();
         for (int num : nums2) {
-            set2.add(num);
+            if (set1.contains(num)) {
+                set2.add(num);
+            }
         }
-        set1.retainAll(set2);
         
-        int[] result = new int[set1.size()];
+        int[] result = new int[set2.size()];
         int i = 0;
-        for(int num : set1) {
+        for(int num : set2) {
             result[i++] = num;
         }
         
