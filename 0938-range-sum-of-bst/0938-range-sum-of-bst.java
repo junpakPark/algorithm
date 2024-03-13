@@ -15,18 +15,24 @@
  */
 class Solution {
     public int rangeSumBST(TreeNode root, int low, int high) {
-        if(root == null) {
-            return 0;
-        }
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.push(root);
         
-        if(root.val > high) {
-            return rangeSumBST(root.left, low, high);
-        }
+        int result = 0;
         
-        if(root.val < low) {
-            return rangeSumBST(root.right, low, high);
+        while(!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            
+            if(node.val > low && node.left != null) {
+                stack.push(node.left);
+            }
+            if(node.val < high && node.right != null) {
+                stack.push(node.right);
+            }
+            if(low <= node.val && node.val <= high) {
+                result += node.val;
+            }
         }
-        
-        return root.val + rangeSumBST(root.left, low, high) + rangeSumBST(root.right, low, high);
+        return result;
     }
 }
