@@ -15,19 +15,24 @@
  */
 class Solution {
     
-    private int prev = Integer.MIN_VALUE + 100000;
-    private int minDiff = Integer.MAX_VALUE;
-    
     public int minDiffInBST(TreeNode root) {
-        if(root.left != null) {
-            minDiffInBST(root.left);
-        }
+        int prev = Integer.MIN_VALUE + 100000;
+        int minDiff = Integer.MAX_VALUE;
         
-        minDiff = Math.min(minDiff, root.val - prev);
-        prev = root.val;
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        TreeNode node = root;
         
-        if(root.right != null) {
-            minDiffInBST(root.right);
+        while(!stack.isEmpty() || node != null) {
+            while(node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            
+            node = stack.pop();
+            minDiff = Math.min(minDiff, node.val - prev);
+            prev = node.val;
+            
+            node = node.right;
         }
         
         return minDiff;
