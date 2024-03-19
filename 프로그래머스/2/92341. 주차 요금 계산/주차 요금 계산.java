@@ -43,18 +43,16 @@ class Solution {
                     outTime = convertTime("23:59");
                 }
                 if (inTime == null) {
-                    inTime = 0;
+                    break;
                 }
 
                 totalTime += (outTime - inTime);
             }
-            totalTime = Math.max(0, totalTime);
 
-            int targetTime = totalTime / fees[2];
-            if (totalTime % fees[2] != 0) {
-                targetTime += 1;
-            }
-            answer[i] = targetTime * fees[3] + fees[1];
+            int targetTime = Math.max(0, totalTime);
+            int extraFee = (int) Math.ceil((float) targetTime / fees[2]) * fees[3];
+            
+            answer[i] = fees[1] + extraFee;
         }
 
         return answer;
