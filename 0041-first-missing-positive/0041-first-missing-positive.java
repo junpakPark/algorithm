@@ -1,23 +1,20 @@
 class Solution {
     public int firstMissingPositive(int[] nums) {
-        Set<Integer> map = new HashSet<>();
+        int n = nums.length;
+
+        boolean[] found = new boolean[n + 1];
         for (int num : nums) {
-            if (num > 0) {
-                map.add(num);
+            if (0 < num && num <= n) {
+                found[num] = true;
             }
         }
 
-        if (map.isEmpty()) {
-            return 1;
-        }
-
-        int maxValue = Collections.max(map);
-
-        for (int i = 1; i < maxValue; i++) {
-            if (!map.contains(i)) {
-                return i;
+        for (int i = 1; i <= n; i++) {
+            if (found[i]) {
+                continue;
             }
+            return i;
         }
-        return maxValue + 1;
+        return n + 1;
     }
 }
