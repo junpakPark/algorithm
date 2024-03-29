@@ -1,36 +1,22 @@
-import java.math.BigDecimal;
-
-class Solution {
+public class Solution {
     public String largestNumber(int[] nums) {
-        int i = 1;
-
-        while (i < nums.length) {
-            int j = i;
-            while (j > 0 && toSwap(nums[j - 1], nums[j])) {
-                int tmp = nums[j];
-                nums[j] = nums[j - 1];
-                nums[j - 1] = tmp;
-                j--;
-            }
-            i++;
+        String[] numsStrings = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            numsStrings[i] = String.valueOf(nums[i]);
         }
 
-        if (nums[0] == 0) {
+        Arrays.sort(numsStrings,
+                (s1, s2) -> (s2 + s1).compareTo(s1 + s2)
+        );
+
+        if (numsStrings[0].equals("0")) {
             return "0";
         }
 
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int num : nums) {
-            stringBuilder.append(num);
+        StringBuilder result = new StringBuilder();
+        for (String numString : numsStrings) {
+            result.append(numString);
         }
-        return stringBuilder.toString();
+        return result.toString();
     }
-
-
-    private boolean toSwap(int left, int right) {
-        BigDecimal leftRight = new BigDecimal(String.valueOf(left) + right);
-        BigDecimal rightLeft = new BigDecimal(String.valueOf(right) + left);
-        return leftRight.compareTo(rightLeft) < 0;
-    }
-
 }
