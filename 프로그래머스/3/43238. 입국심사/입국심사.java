@@ -1,29 +1,28 @@
 class Solution {
     public long solution(int n, int[] times) {
-        long answer = 0;
+        long answer = Long.MAX_VALUE;
 
-        long left = 1L;
-        long max = 0L;
+        long left = 1;
+        long maxTime = 0;
         for (int time : times) {
-            max = Math.max(max, time);
+            maxTime = Math.max(maxTime, time);
         }
-        long right = max * n;
-        long mid = right;
+        long right = maxTime * (long) n;
 
         while (left <= right) {
-            long calcN = 0L;
+            long mid = left + (right - left) / 2;
+
+            long processed = 0;
             for (int time : times) {
-                calcN += (mid / time);
+                processed += mid / time;
             }
 
-            if (calcN >= n) {
-                answer = mid;
+            if (processed >= n) {
+                answer = Math.min(answer, mid);
                 right = mid - 1;
-            } else {
-                left = mid + 1;
+                continue;
             }
-
-            mid = left + (right - left) / 2;
+            left = mid + 1;
         }
 
         return answer;
