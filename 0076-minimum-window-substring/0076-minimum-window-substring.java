@@ -1,53 +1,36 @@
-import java.util.HashMap;
-import java.util.Map;
-
-public class Solution {
+class Solution {
     public String minWindow(String s, String t) {
-        if (s.length() == 0 || t.length() == 0) {
-            return "";
+        Map<Character, Integer> need = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            need.put(c, need.getOrDefault(c, 0) + 1);
         }
 
-        Map<Character, Integer> dictT = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            int count = dictT.getOrDefault(t.charAt(i), 0);
-            dictT.put(t.charAt(i), count + 1);
-        }
-
-        int required = dictT.size();
-
-        int l = 0, r = 0, formed = 0;
-        Map<Character, Integer> windowCounts = new HashMap<>();
-
-        int[] ans = {-1, 0, 0};
-
-        while (r < s.length()) {
-            char c = s.charAt(r);
-            int count = windowCounts.getOrDefault(c, 0);
-            windowCounts.put(c, count + 1);
-
-            if (dictT.containsKey(c) && windowCounts.get(c).intValue() == dictT.get(c).intValue()) {
-                formed++;
+        int missing = t.length();
+        int left = 0, right = 0, start = 0, end = 0;
+        int minLength = Integer.MAX_VALUE;
+        for (char c : s.toCharArray()) {
+            right++;
+            if (need.containsKey(c) && need.get(c) > 0) {
+                missing--;
             }
+            need.put(c, need.getOrDefault(c, 0) - 1);
 
-            while (l <= r && formed == required) {
-                c = s.charAt(l);
-                if (ans[0] == -1 || r - l + 1 < ans[0]) {
-                    ans[0] = r - l + 1;
-                    ans[1] = l;
-                    ans[2] = r;
+            if (missing == 0) {
+                while (left < right && need.get(s.charAt(left)) < 0) {
+                    need.put(s.charAt(left), need.getOrDefault(s.charAt(left), 0) + 1);
+                    left++;
                 }
 
-                windowCounts.put(c, windowCounts.get(c) - 1);
-                if (dictT.containsKey(c) && windowCounts.get(c).intValue() < dictT.get(c).intValue()) {
-                    formed--;
+                if (minLength > right - left + 1) {
+                    minLength = right - left + 1;
+                    start = left;
+                    end = right;
                 }
-
-                l++;
+                need.put(s.charAt(left), need.getOrDefault(s.charAt(left), 0) + 1);
+                missing++;
+                left++;
             }
-
-            r++;
         }
-
-        return ans[0] == -1 ? "" : s.substring(ans[1], ans[2] + 1);
+        return s.substring(start, end);
     }
 }
