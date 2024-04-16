@@ -1,8 +1,6 @@
-import java.util.function.IntBinaryOperator;
-
 class Solution {
 
-    public static final Map<Character, IntBinaryOperator> OPERATORS = new HashMap<>();
+    private static final Map<Character, IntBinaryOperator> OPERATORS = new HashMap<>();
 
     static {
         OPERATORS.put('+', Integer::sum);
@@ -10,8 +8,15 @@ class Solution {
         OPERATORS.put('*', (a, b) -> a * b);
     }
 
+    private final Map<String, List<Integer>> memo = new HashMap<>();
+
     public List<Integer> diffWaysToCompute(String expression) {
         List<Integer> results = new ArrayList<>();
+
+        if (memo.containsKey(expression)) {
+            return memo.get(expression);
+        }
+
         for (int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
 
@@ -31,6 +36,8 @@ class Solution {
         if (results.isEmpty()) {
             results.add(Integer.parseInt(expression));
         }
+        memo.put(expression, results);
+        
         return results;
     }
 }
