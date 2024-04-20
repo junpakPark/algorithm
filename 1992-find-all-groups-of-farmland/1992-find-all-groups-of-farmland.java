@@ -1,42 +1,40 @@
-public class Solution {
+
+class Solution {
+
     private int[][] land;
-    private boolean[][] visited;
-    private int m, n;
+    private int m;
+    private int n;
+    int h = 0;
+    int k = 0;
 
     public int[][] findFarmland(int[][] land) {
         this.land = land;
-        m = land.length;
-        n = land[0].length;
-        visited = new boolean[m][n];
+        this.m = land.length;
+        this.n = land[0].length;
 
-        List<int[]> results = new ArrayList<>();
+        List<int[]> ans = new ArrayList<>();
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                if (land[i][j] == 1 && !visited[i][j]) {
-                    int[] bounds = new int[]{i, j, i, j};
-                    dfs(i, j, bounds);
-                    results.add(new int[]{bounds[0], bounds[1], bounds[2], bounds[3]});
+                if (land[i][j] == 1) {
+                    dfs(i, j);
+                    ans.add(new int[]{i, j, h, k});
+                    h = 0;
+                    k = 0;
                 }
             }
         }
-
-        return results.toArray(new int[results.size()][]);
+        return ans.toArray(new int[ans.size()][]);
     }
 
-    private void dfs(int i, int j, int[] bounds) {
-        if (i < 0 || i >= m || j < 0 || j >= n || land[i][j] != 1 || visited[i][j]) {
+    public void dfs(int u, int v) {
+        if (u < 0 || v < 0 || u >= m || v >= n || land[u][v] == 0) {
             return;
         }
+        land[u][v] = 0;
+        h = Math.max(h, u);
+        k = Math.max(k, v);
 
-        visited[i][j] = true;
-        bounds[0] = Math.min(bounds[0], i);
-        bounds[1] = Math.min(bounds[1], j);
-        bounds[2] = Math.max(bounds[2], i);
-        bounds[3] = Math.max(bounds[3], j);
-
-        dfs(i + 1, j, bounds);
-        dfs(i - 1, j, bounds);
-        dfs(i, j + 1, bounds);
-        dfs(i, j - 1, bounds);
+        dfs(u + 1, v);
+        dfs(u, v + 1);
     }
 }
