@@ -1,44 +1,48 @@
 class Solution {
-
-    private List<List<Integer>> graph;
-    private boolean[] visited;
-    private int destination;
+    private int[] parent;
+    private int[] rank;
 
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        this.visited = new boolean[n];
-        this.destination = destination;
-        this.graph = new ArrayList<>();
+        parent = new int[n];
+        rank = new int[n];
 
         for (int i = 0; i < n; i++) {
-            graph.add(new ArrayList<>());
-        }
-        for (int[] edge : edges) {
-            graph.get(edge[0]).add(edge[1]);
-            graph.get(edge[1]).add(edge[0]);
+            parent[i] = i;
+            rank[i] = 0;
         }
 
-        return bfs(source);
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            union(u, v);
+        }
+
+        return find(source) == find(destination);
     }
 
-    private boolean bfs(final int source) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(source);
-        visited[source] = true;
-
-        while (!queue.isEmpty()) {
-            int currentNode = queue.poll();
-            if (currentNode == destination) {
-                return true;
-            }
-
-            for (int adjacentNode : graph.get(currentNode)) {
-                if (!visited[adjacentNode]) {
-                    visited[adjacentNode] = true;
-                    queue.add(adjacentNode);
-                }
-            }
+    private int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
         }
+        return parent[x];
+    }
 
-        return false;
+    private void union(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+
+        if (rootX == rootY) {
+            return;
+        }
+        if (rank[rootX] > rank[rootY]) {
+            parent[rootY] = rootX;
+            return;
+        }
+        if (rank[rootX] < rank[rootY]) {
+            parent[rootX] = rootY;
+            return;
+        }
+        parent[rootY] = rootX;
+        rank[rootX] += 1;
     }
 }
