@@ -1,20 +1,46 @@
+
 class Solution {
     public int[] kthSmallestPrimeFraction(int[] arr, int k) {
-        PriorityQueue<int[]> queue = new PriorityQueue<>(k,
-                (o1, o2) -> arr[o1[0]] * arr[o2[1]] - arr[o1[1]] * arr[o2[0]]);
-        
         int n = arr.length;
-        int min = Math.min(k, n);
-        for (int i = 0; i < min; i++) {
-            queue.offer(new int[]{i, n - 1});
-        }
-        
-        while (!queue.isEmpty() && --k > 0) {
-            int[] cur = queue.poll();
-            if (--cur[1] > cur[0]) {
-                queue.offer(cur);
+        double left = 0, right = 1.0;
+
+        while (left < right) {
+
+            double mid = (left + right) / 2;
+
+            double maxFraction = 0.0;
+            int totalSmallerFractions = 0, numeratorIdx = 0, denominatorIdx = 0;
+            int j = 1;
+
+            for (int i = 0; i < n - 1; i++) {
+                while (j < n && arr[i] >= mid * arr[j]) {
+                    j++;
+                }
+
+                totalSmallerFractions += (n - j);
+
+                if (j == n) {
+                    break;
+                }
+
+                double fraction = (double) arr[i] / arr[j];
+
+                if (fraction > maxFraction) {
+                    numeratorIdx = i;
+                    denominatorIdx = j;
+                    maxFraction = fraction;
+                }
             }
+            
+            if (totalSmallerFractions == k) {
+                return new int[]{arr[numeratorIdx], arr[denominatorIdx]};
+            }
+            if (totalSmallerFractions > k) {
+                right = mid;
+                continue;
+            }
+            left = mid;
         }
-        return new int[]{arr[queue.peek()[0]], arr[queue.peek()[1]]};
+        return new int[]{};
     }
 }
