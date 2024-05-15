@@ -1,107 +1,84 @@
 class Solution {
-    private static final int[] DIR_X = {1, -1, 0, 0};
-    private static final int[] DIR_Y = {0, 0, 1, -1};
-
-    private int n;
-    private List<List<Integer>> grid;
-    private List<List<Integer>> distance;
+    private static final int[][] DIRECTIONS = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
 
     public int maximumSafenessFactor(List<List<Integer>> grid) {
-        this.n = grid.size();
-        this.grid = grid;
-        this.distance = new ArrayList<>();
+        int n = grid.size();
+        int[][] gridArr = new int[n][n];
+        int[][] safety = new int[n][n];
+        Queue<int[]> queue = new LinkedList<>();
 
-        for (int i = 0; i < n; i++) {
-            List<Integer> row = new ArrayList<>(Collections.nCopies(n, Integer.MAX_VALUE));
-            distance.add(row);
+        initializeGrids(grid, gridArr, safety, queue);
+
+        if (gridArr[0][0] == 1 || gridArr[n - 1][n - 1] == 1) {
+            return 0;
         }
 
-        for (List<Integer> row : distance) {
-            Collections.fill(row, Integer.MAX_VALUE);
-        }
-        calculateMinimumDistances();
+        calculateSafetyDistances(safety, queue, n);
 
-        return binarySearchMaximumSafeness();
+        return findMaxSafenessPath(safety, gridArr, n);
     }
 
-    private void calculateMinimumDistances() {
-        Queue<Point> queue = new LinkedList<>();
+    private void initializeGrids(List<List<Integer>> grid, int[][] gridArr, int[][] safety, Queue<int[]> queue) {
+        int n = grid.size();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid.get(i).get(j) == 1) {
-                    queue.offer(new Point(i, j));
-                    distance.get(i).set(j, 0);
-                }
-            }
-        }
-
-        while (!queue.isEmpty()) {
-            Point p = queue.poll();
-            for (int i = 0; i < 4; i++) {
-                int newX = p.x + DIR_X[i];
-                int newY = p.y + DIR_Y[i];
-                if (isValidCell(newX, newY) && distance.get(newX).get(newY) > distance.get(p.x).get(p.y) + 1) {
-                    distance.get(newX).set(newY, distance.get(p.x).get(p.y) + 1);
-                    queue.offer(new Point(newX, newY));
+                    gridArr[i][j] = 1;
+                    safety[i][j] = 0;
+                    queue.add(new int[]{i, j, 0});
+                } else {
+                    safety[i][j] = Integer.MAX_VALUE;
                 }
             }
         }
     }
 
-    private boolean isValidCell(int x, int y) {
+    private void calculateSafetyDistances(int[][] safety, Queue<int[]> queue, int n) {
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            int currX = curr[0];
+            int currY = curr[1];
+
+            int currSafety = curr[2];
+
+            for (int[] dir : DIRECTIONS) {
+                int nextX = currX + dir[0];
+                int nextY = currY + dir[1];
+                if (isValid(nextX, nextY, n) && safety[nextX][nextY] > currSafety + 1) {
+                    queue.add(new int[]{nextX, nextY, currSafety + 1});
+                    safety[nextX][nextY] = currSafety + 1;
+                }
+            }
+        }
+    }
+
+    private int findMaxSafenessPath(int[][] safety, int[][] gridArr, int n) {
+        PriorityQueue<int[]> pathQueue = new PriorityQueue<>((a, b) -> Integer.compare(b[2], a[2]));
+        pathQueue.add(new int[]{0, 0, safety[0][0]});
+        gridArr[0][0] = 2;
+
+        while (!pathQueue.isEmpty()) {
+            int[] curr = pathQueue.poll();
+            int currX = curr[0];
+            int currY = curr[1];
+            int currSafety = curr[2];
+            if (currX == n - 1 && currY == n - 1) {
+                return currSafety;
+            }
+            for (int[] dir : DIRECTIONS) {
+                int nextX = currX + dir[0];
+                int nextY = currY + dir[1];
+                if (isValid(nextX, nextY, n) && gridArr[nextX][nextY] != 2) {
+                    pathQueue.add(new int[]{nextX, nextY, Math.min(currSafety, safety[nextX][nextY])});
+                    gridArr[nextX][nextY] = 2;
+                }
+            }
+        }
+        return 0;
+    }
+
+    private boolean isValid(int x, int y, int n) {
         return x >= 0 && x < n && y >= 0 && y < n;
-    }
-
-    private int binarySearchMaximumSafeness() {
-        int left = 0, right = n * 2, answer = 0;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (canReachEndWithSafeness(mid)) {
-                answer = mid;
-                left = mid + 1;
-                continue;
-            }
-            right = mid - 1;
-        }
-        
-        return answer;
-    }
-
-    private boolean canReachEndWithSafeness(int safenessFactor) {
-        if (distance.get(0).get(0) < safenessFactor) {
-            return false;
-        }
-
-        boolean[][] visited = new boolean[n][n];
-        Queue<Point> queue = new LinkedList<>();
-        queue.offer(new Point(0, 0));
-        visited[0][0] = true;
-
-        while (!queue.isEmpty()) {
-            Point p = queue.poll();
-            if (p.x == n - 1 && p.y == n - 1) {
-                return true;
-            }
-            for (int i = 0; i < 4; i++) {
-                int newX = p.x + DIR_X[i];
-                int newY = p.y + DIR_Y[i];
-                if (isValidCell(newX, newY) && !visited[newX][newY] && distance.get(newX).get(newY) >= safenessFactor) {
-                    visited[newX][newY] = true;
-                    queue.offer(new Point(newX, newY));
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private static class Point {
-        int x, y;
-
-        Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
     }
 
 }
