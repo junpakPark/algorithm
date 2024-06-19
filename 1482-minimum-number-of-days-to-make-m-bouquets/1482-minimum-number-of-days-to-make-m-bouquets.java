@@ -1,37 +1,48 @@
 class Solution {
-  public int minDays(int[] bloomDay, int m, int k) {
-        if (bloomDay.length < (long) m * k) {
+
+    public int minDays(int[] bloomDay, int m, int k) {
+        if (bloomDay.length < m * k) {
             return -1;
         }
 
-        int left = Arrays.stream(bloomDay).min().getAsInt();
-        int right = Arrays.stream(bloomDay).max().getAsInt();
+        int left = 1;
+        int right = 0;
+        for (int day : bloomDay) {
+            right = Math.max(right, day);
+        }
 
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (getBouquetCount(bloomDay, k, mid) >= m) {
-                right = mid;
+        int result = -1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (getNumOfBouquets(bloomDay, mid, k) >= m) {
+                result = mid;
+                right = mid - 1;
             } else {
                 left = mid + 1;
             }
         }
 
-        return left;
+        return result;
     }
-    
-    private int getBouquetCount(int[] bloomDay, int k, int waitingDays) {
-        int bouquetCount = 0;
-        int flowersRequired = k;
 
-        for (final int day : bloomDay) {
-            if (day > waitingDays) {
-                flowersRequired = k;
-            } else if (--flowersRequired == 0) {
-                ++bouquetCount;
-                flowersRequired = k;
+    private int getNumOfBouquets(int[] bloomDay, int day, int k) {
+        int numOfBouquets = 0;
+        int count = 0;
+
+        for (int i = 0; i < bloomDay.length; i++) {
+            if (bloomDay[i] <= day) {
+                count++;
+            } else {
+                count = 0;
+            }
+
+            if (count == k) {
+                numOfBouquets++;
+                count = 0;
             }
         }
 
-        return bouquetCount;
+        return numOfBouquets;
     }
 }
