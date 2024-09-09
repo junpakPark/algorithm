@@ -7,8 +7,13 @@ This is a auto push repository for Baekjoon Online Judge created with [BaekjoonH
 |  |
 | ------- |
 | [0080-remove-duplicates-from-sorted-array-ii](https://github.com/junpakPark/algorithm/tree/master/0080-remove-duplicates-from-sorted-array-ii) |
+| [1603-running-sum-of-1d-array](https://github.com/junpakPark/algorithm/tree/master/1603-running-sum-of-1d-array) |
 ## Two Pointers
 |  |
 | ------- |
 | [0080-remove-duplicates-from-sorted-array-ii](https://github.com/junpakPark/algorithm/tree/master/0080-remove-duplicates-from-sorted-array-ii) |
+## Prefix Sum
+|  |
+| ------- |
+| [1603-running-sum-of-1d-array](https://github.com/junpakPark/algorithm/tree/master/1603-running-sum-of-1d-array) |
 <!---LeetCode Topics End-->
