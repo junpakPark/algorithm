@@ -16,4 +16,12 @@ This is a auto push repository for Baekjoon Online Judge created with [BaekjoonH
 |  |
 | ------- |
 | [1603-running-sum-of-1d-array](https://github.com/junpakPark/algorithm/tree/master/1603-running-sum-of-1d-array) |
+## String
+|  |
+| ------- |
+| [0020-valid-parentheses](https://github.com/junpakPark/algorithm/tree/master/0020-valid-parentheses) |
+## Stack
+|  |
+| ------- |
+| [0020-valid-parentheses](https://github.com/junpakPark/algorithm/tree/master/0020-valid-parentheses) |
 <!---LeetCode Topics End-->
