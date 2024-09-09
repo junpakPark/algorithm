@@ -1,13 +1,12 @@
 class Solution {
     public boolean isValid(String s) {
-        Deque<Character> stack = new ArrayDeque<>();
-
         Map<Character, Character> table = new HashMap<>();
         table.put(')', '(');
         table.put('}', '{');
         table.put(']', '[');
 
         int length = s.length();
+        Deque<Character> stack = new ArrayDeque<>();
         for (int i = 0; i < length; i++) {
             char key = s.charAt(i);
 
