@@ -2,54 +2,53 @@ import java.util.*;
 
 class Solution {
     
+    private static final int INF = 1_000_000_000;
+    
     public int solution(int N, int[][] road, int K) {
-        final List<List<int[]>> graph = new ArrayList<>();
-        for (int i = 0; i <= N; i++) {
-            graph.add(new ArrayList<>());
+        final int[][] graph = new int[N + 1][N + 1];
+        for (int i = 1; i <= N; i++) {
+            Arrays.fill(graph[i], INF);
+            graph[i][i] = 0;
         }
         
         for (int[] r : road) {
-            final int from = r[0];
-            final int to = r[1];
-            final int cost = r[2];
-            
-            graph.get(from).add(new int[]{to, cost});
-            graph.get(to).add(new int[]{from, cost});
+            graph[r[0]][r[1]] = Math.min(graph[r[0]][r[1]], r[2]);
+            graph[r[1]][r[0]] = Math.min(graph[r[1]][r[0]], r[2]);
         }
         
-        final int[] distances = new int[N + 1];
-        Arrays.fill(distances, Integer.MAX_VALUE);
-        distances[1] = 0;
+        int[] dist = new int[N + 1];
+        Arrays.fill(dist, INF);
+        dist[1] = 0;
         
         final PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
         pq.offer(new int[]{1, 0});
         
         while(!pq.isEmpty()) {
-            final int[] current = pq.poll();
-            final int node = current[0];
-            final int cost = current[1];
+            int[] current = pq.poll();
+            int node = current[0];
+            int cost = current[1];
             
-            if (cost > distances[node]) {
+            if (cost > dist[node]) {
                 continue;
             }
             
-            for (int[] next: graph.get(node)) {
-                final int nextNode = next[0];
-                final int nextCost = next[1];
-                final int totalCost = cost + nextCost;
-                
-                if (distances[nextNode] > totalCost) {
-                    distances[nextNode] = totalCost;
-                    pq.offer(new int[]{nextNode, totalCost});
+           for (int i = 1; i <= N; i++) {
+                if (graph[node][i] == INF) {
+                    continue;
+                }
+                int totalCost = cost + graph[node][i];
+                if (dist[i] > totalCost) {
+                    dist[i] = totalCost;
+                    pq.offer(new int[]{i, totalCost});
                 }
             }
         }
         
         int answer = 0;
-        for (int distance : distances) {
-           if (distance <= K) {
-               answer++;
-           } 
+        for (int d : dist) {
+            if (d <= K) {
+                answer++;
+            }
         }
         return answer;
     }
