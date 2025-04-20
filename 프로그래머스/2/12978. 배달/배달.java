@@ -10,10 +10,9 @@ class Solution {
             Arrays.fill(graph[i], INF);
             graph[i][i] = 0;
         }
-        
         for (int[] r : road) {
-            graph[r[0]][r[1]] = Math.min(graph[r[0]][r[1]], r[2]);
-            graph[r[1]][r[0]] = Math.min(graph[r[1]][r[0]], r[2]);
+            graph[r[0]][r[1]] = Math.min(graph[r[0]][r[1]],r[2]);
+            graph[r[1]][r[0]] = Math.min(graph[r[1]][r[0]],r[2]);
         }
         
         int[] dist = new int[N + 1];
@@ -31,17 +30,17 @@ class Solution {
             if (cost > dist[node]) {
                 continue;
             }
-            
-           for (int i = 1; i <= N; i++) {
-                if (graph[node][i] == INF) {
+            for (int i = 1; i <= N; i++) {
+                final int nextCost = graph[node][i];
+                if (nextCost == INF) {
                     continue;
                 }
-                int totalCost = cost + graph[node][i];
+                int totalCost = cost + nextCost;
                 if (dist[i] > totalCost) {
                     dist[i] = totalCost;
                     pq.offer(new int[]{i, totalCost});
                 }
-            }
+            }   
         }
         
         int answer = 0;
