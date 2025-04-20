@@ -15,8 +15,8 @@ class Solution {
                     right[i][j] += (right[i][j - 1] + down[i - 1][j]) % MOD;
                     down[i][j] += (right[i][j - 1] + down[i - 1][j]) % MOD;
                 } else if (cityMap[i - 1][j - 1] == 2) {
-                    right[i][j] += right[i][j -1];
-                    down[i][j] += down[i- 1][j];
+                    right[i][j] += right[i][j - 1];
+                    down[i][j] += down[i - 1][j];
                 }
             }
         }
